@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/admin")
-    public ResponseEntity<ApiResponse> toggleAdmin(@PathVariable Long id, @RequestParam boolean isAdmin) {
+    public ResponseEntity<ApiResponse> toggleAdmin(@PathVariable Long id, @RequestParam(name="isAdmin") boolean isAdmin) {
         User existingUser = userService.getUserById(id);
         if (existingUser == null) {
             return ResponseEntity.notFound().build();

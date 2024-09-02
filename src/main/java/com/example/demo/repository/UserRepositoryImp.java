@@ -25,7 +25,6 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public int createUser(User user) {
-
         String query = "INSERT INTO user (username, password, admin) VALUES (?, ?, ?)";
         int result = jdbcTemplate.update(query, user.getUsername(), user.getPassword(), user.getAdmin());
         return result;
