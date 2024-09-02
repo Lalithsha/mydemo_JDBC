@@ -63,6 +63,13 @@ public class UserRepositoryImp implements UserRepository {
         return result;
     }
 
+    @Override
+    public boolean isUserAdmin(Long id) {
+        String query = "SELECT admni from user WHERE id = ?";
+        Boolean result = jdbcTemplate.queryForObject(query, Boolean.class, id);
+        return result != null && result;
+    }
+
     public static final class UserMapper implements RowMapper<User> {
 
         @Override

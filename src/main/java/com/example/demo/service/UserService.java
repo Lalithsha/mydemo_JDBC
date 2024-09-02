@@ -16,4 +16,6 @@ public interface UserService {
     List<User> getAllUsers();
 
     void changeAdmin(Long id, boolean isAdmin);
+
+    boolean isUserAdmin(Long id);
 }

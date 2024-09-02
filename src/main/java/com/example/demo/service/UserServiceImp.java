@@ -56,4 +56,9 @@ public class UserServiceImp implements UserService {
         userRepository.changeAdmin(id, isAdmin);
     }
 
+    @Override
+    public boolean isUserAdmin(Long id) {
+        return userRepository.isUserAdmin(id);
+    }
+
 }

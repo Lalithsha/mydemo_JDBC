@@ -64,7 +64,8 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/admin")
-    public ResponseEntity<ApiResponse> toggleAdmin(@PathVariable Long id, @RequestParam(name="isAdmin") boolean isAdmin) {
+    public ResponseEntity<ApiResponse> toggleAdmin(@PathVariable Long id,
+            @RequestParam(name = "isAdmin") boolean isAdmin) {
         User existingUser = userService.getUserById(id);
         if (existingUser == null) {
             return ResponseEntity.notFound().build();
@@ -85,6 +86,35 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<?> updateUserWithPermissionCheck(@PathVariable Long id, @RequestBody User user) {
+        if (!userService.isUserAdmin(id)) {
+            return ResponseEntity.status(403).body("User does not have permission for updating.");
+        }
+
+        User existingUser = userService.getUserById(id);
+        if (existingUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Update only the fields provided in the request
+        if (user.getUsername() != null) {
+            existingUser.setUsername(user.getUsername());
+        }
+
+        if (user.getPassword() != null) {
+            existingUser.setPassword(user.getPassword());
+        }
+
+        if (user.getAdmin() != existingUser.getAdmin()) {
+            existingUser.setAdmin(user.getAdmin());
+        }
+
+        userService.updateUser(existingUser);
+        return ResponseEntity.ok().body("Updated user successfully");
+
     }
 
 }

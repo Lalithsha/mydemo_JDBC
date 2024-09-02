@@ -16,4 +16,6 @@ public interface UserRepository {
     List<User> getAllUsers();
 
     int changeAdmin(Long id, boolean isAdmin);
+
+    boolean isUserAdmin(Long id);
 }
