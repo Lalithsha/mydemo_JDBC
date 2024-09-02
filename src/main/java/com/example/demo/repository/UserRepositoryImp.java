@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
@@ -46,8 +47,17 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public User getUserById(Long id) {
+        /*
+         * String query = "SELECT * FROM user WHERE id = ?";
+         * return jdbcTemplate.queryForObject(query, new Object[] { id }, new
+         * UserMapper());
+         */
         String query = "SELECT * FROM user WHERE id = ?";
-        return jdbcTemplate.queryForObject(query, new Object[] { id }, new UserMapper());
+        try {
+            return jdbcTemplate.queryForObject(query, new UserMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
